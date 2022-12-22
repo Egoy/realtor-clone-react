@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router'
 
 export default function Header() {
     const [pageState, setPageState] = useState('Sign in')
-    const [pageLink, setPageLink] = useState('/signin')
+    const [pageLink, setPageLink] = useState('/sign-in')
     const location = useLocation()
     const navigate = useNavigate()
     const auth = getAuth()
