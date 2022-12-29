@@ -4,17 +4,17 @@ import Spinner from "../components/Spinner";
 import { getAuth } from 'firebase/auth'
 import { v4 as uuidv4 } from 'uuid'
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { addDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase'
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export default function CreateListing() {
-    const navigate = useNavigate
+    const navigate = useNavigate()
     const auth = getAuth()
     const [geolocationEnabled, setGeolocationEnabled] = useState(false)
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
-        type: '',
+        type: 'sale',
         name: '',
         bedrooms: 1,
         bathrooms: 1,
@@ -135,13 +135,14 @@ export default function CreateListing() {
         ...formData,
         imgUrls,
         geolocation,
-        timestamp: serverTimestamp()
+        timestamp: serverTimestamp(),
+        userRef: auth.currentUser.uid
     }
     delete formDataCopy.images;
     !formDataCopy.offer && delete formDataCopy.discountedPrice
     delete formDataCopy.latitude
     delete formDataCopy.longitude
-    const docRef = await addDoc(collection(db, 'listings'), formDataCopy)
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy)
     setLoading(false)
     toast.success('Listing posted')
     navigate(`/category/${formDataCopy.type}/${docRef.id}`)
@@ -150,6 +151,7 @@ export default function CreateListing() {
   if (loading) { 
     return <Spinner />
   }
+
   return (
     <main className='max-w-md px-2 mx-auto'>
         <h1 className='text-3xl text-center mt-6 font-bold'>Create a Listing</h1>
