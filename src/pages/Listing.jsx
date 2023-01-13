@@ -86,7 +86,7 @@ export default function Listing() {
                <FaParking className='text-lg mr-1'/> {+listing.parking ? "Parking Spot" : "No Parking"}
             </li>
             <li className='flex items-center whitespace-nowrap'>
-               <FaChair className='text-lg mr-1'/> {+listing.furnised ? "Furnished" : "Not furnished"}
+               <FaChair className='text-lg mr-1'/> {+listing.furnished ? "Furnished" : "Not furnished"}
             </li>
           </ul>
           {listing.userRef !== auth.currentUser?.uid && !contactLandlord &&   (
